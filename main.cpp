@@ -99,7 +99,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 		/// ↓描画処理ここから
 		///
 
-		DrawSphere(sphere, worldViewProjectionMatrix, viewportMatrix, 0xAAAAAAFF);
+		DrawSphere(sphere, worldViewProjectionMatrix, viewportMatrix, BLACK);
 		DrawGrit(worldViewProjectionMatrix, viewportMatrix);
 
 
