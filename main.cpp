@@ -405,15 +405,15 @@ void DrawSphere(const Sphere& sphere, const Matrix4x4& viewProjectionMatrix, con
 		for (uint32_t lonIndex = 0; lonIndex < kSubdivision; ++lonIndex) {
 			float lon = lonIndex * kLonEvery;//現在の経度
 			//ワールド座標系での頂点を求める
-			a = { (sphere.center.x + sphere.radius)*(cos(lat) * cos(lon)),
-				(sphere.center.y + sphere.radius)*(sin(lat)),
-				(sphere.center.z + sphere.radius)*(cos(lat) * sin(lon)) };
-			b = { (sphere.center.x + sphere.radius)*(cos(lat + kLatEvery) * cos(lon)),
-				(sphere.center.y + sphere.radius)*(sin(lat + kLatEvery)),
-				(sphere.center.z + sphere.radius)*(cos(lat + kLatEvery) * sin(lon)) };
-			c = { (sphere.center.x + sphere.radius)*(cos(lat) * cos(lon + kLonEvery)),
-				(sphere.center.y + sphere.radius)*(sin(lat)),
-				(sphere.center.z + sphere.radius)*(cos(lat) * sin(lon + kLonEvery)) };
+			a = { (sphere.radius)*(cos(lat) * cos(lon))+ sphere.center.x,
+				(sphere.radius)*(sin(lat)) + sphere.center.y,
+				(sphere.radius)*(cos(lat) * sin(lon))+ sphere.center.z };
+			b = { (sphere.radius)*(cos(lat + kLatEvery) * cos(lon)) + sphere.center.x,
+				(sphere.radius)*(sin(lat + kLatEvery)) + sphere.center.y,
+				(sphere.radius)*(cos(lat + kLatEvery) * sin(lon))+ sphere.center.z };
+			c = { (sphere.radius)*(cos(lat) * cos(lon + kLonEvery)) + sphere.center.x,
+				( sphere.radius)*(sin(lat)) + sphere.center.y,
+				( sphere.radius)*(cos(lat) * sin(lon + kLonEvery))+ sphere.center.z };
 			//a,b,cをスクリーン座標系まで変換
 			Matrix4x4 aWorldMatrix = MakeAffineMatrix({ 1.0f,1.0f,1.0f }, Vector3{}, a);
 			Matrix4x4 aworldViewProjectionMatrix = Multiply(aWorldMatrix, viewProjectionMatrix);
