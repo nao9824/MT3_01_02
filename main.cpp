@@ -340,6 +340,7 @@ Vector3 Transform(const Vector3& vector, const Matrix4x4& matrix) {
 	return result;
 }
 
+//グリッド線の描画
 void DrawGrit(const Matrix4x4& viewProjectionMatrix, const Matrix4x4& viewportMatrix) {
 	const float kGridHalfWidth = 2.0f;//Gridの半分の幅
 	const uint32_t kSubdivision = 10;//分割数
@@ -356,17 +357,21 @@ void DrawGrit(const Matrix4x4& viewProjectionMatrix, const Matrix4x4& viewportMa
 		zLineEnd = Vector3(xIndex * kGridEvery - kGridHalfWidth, 0, -kGridHalfWidth);
 		//スクリーン座標系まで変換をかける
 		Matrix4x4 zStartWorldMatrix = MakeAffineMatrix({ 1.0f,1.0f,1.0f }, Vector3{}, zLineStart);
-		Matrix4x4 zStartworldViewProjectionMatrix = Multiply(zStartWorldMatrix,viewProjectionMatrix);
+		Matrix4x4 zStartworldViewProjectionMatrix = Multiply(zStartWorldMatrix, viewProjectionMatrix);
 		Vector3 zStartNdcVertex = Transform(Vector3{}, zStartworldViewProjectionMatrix);
 		Vector3 zStartScreenVertice = Transform(zStartNdcVertex, viewportMatrix);
 
 		Matrix4x4 zEndWorldMatrix = MakeAffineMatrix({ 1.0f,1.0f,1.0f }, Vector3{}, zLineEnd);
-		Matrix4x4 zEndworldViewProjectionMatrix = Multiply(zEndWorldMatrix,viewProjectionMatrix);
+		Matrix4x4 zEndworldViewProjectionMatrix = Multiply(zEndWorldMatrix, viewProjectionMatrix);
 		Vector3 zEndNdcVertex = Transform(Vector3{}, zEndworldViewProjectionMatrix);
 		Vector3 zEndScreenVertice = Transform(zEndNdcVertex, viewportMatrix);
 
-		Novice::DrawLine((int)zStartScreenVertice.x, (int)zStartScreenVertice.y, (int)zEndScreenVertice.x, (int)zEndScreenVertice.y, 0xAAAAAAFF);
-
+		if (xIndex == 5) {
+			Novice::DrawLine((int)zStartScreenVertice.x, (int)zStartScreenVertice.y, (int)zEndScreenVertice.x, (int)zEndScreenVertice.y, BLACK);
+		}
+		else {
+			Novice::DrawLine((int)zStartScreenVertice.x, (int)zStartScreenVertice.y, (int)zEndScreenVertice.x, (int)zEndScreenVertice.y, 0xAAAAAAFF);
+		}
 	}
 
 	//左から右も同じように順々に引いていく
@@ -385,8 +390,12 @@ void DrawGrit(const Matrix4x4& viewProjectionMatrix, const Matrix4x4& viewportMa
 		Vector3 xEndNdcVertex = Transform(Vector3{}, xEndworldViewProjectionMatrix);
 		Vector3 xEndScreenVertice = Transform(xEndNdcVertex, viewportMatrix);
 
-		Novice::DrawLine((int)xStartScreenVertice.x, (int)xStartScreenVertice.y, (int)xEndScreenVertice.x, (int)xEndScreenVertice.y, 0xAAAAAAFF);
-
+		if (zIndex == 5) {
+			Novice::DrawLine((int)xStartScreenVertice.x, (int)xStartScreenVertice.y, (int)xEndScreenVertice.x, (int)xEndScreenVertice.y, BLACK);
+		}
+		else {
+			Novice::DrawLine((int)xStartScreenVertice.x, (int)xStartScreenVertice.y, (int)xEndScreenVertice.x, (int)xEndScreenVertice.y, 0xAAAAAAFF);
+		}
 	}
 }
 
